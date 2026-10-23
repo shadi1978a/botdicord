@@ -1,0 +1,50 @@
+import random
+import os
+import discord
+from discord.ext import commands
+from settings import *
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(
+command_prefix = '$',
+intents = intents
+)
+
+
+@bot.event
+async def on_ready():
+print(f'Bot online: {bot.user}')
+print(os.listdir("images"))
+
+
+@bot.command()
+async def somma(ctx, numero1: int, numero2: int):
+    risultato = numero1 + numero2
+
+    await ctx.send(f"La somma è: {risultato}")
+
+@bot.command()
+async def mem(ctx):
+
+    with open('images/mem1.png', 'rb') as f:
+    # Memorizziamo il file della libreria di Discord convertito in questa variabile!
+    picture = discord.File(f)
+    # Possiamo quindi inviare questo file come parametro!
+    await ctx.send(file=picture)
+
+@bot.command()
+async def memr(ctx):
+
+    image_random = random.choice(os.listdir("images"))
+
+print(image_random)
+with open(f"images\{image_random}", 'rb') as f:
+# Memorizziamo il file della libreria di Discord convertito in questa variabile!
+    picture = discord.File(f)
+# Possiamo quindi inviare questo file come parametro!
+await ctx.send(file=picture)
+
+
+bot.run(settings["TOKEN"])
